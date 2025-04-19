@@ -1,0 +1,41 @@
+import Link from "next/link";
+import { Button } from "./ui/button";
+import Image from "next/image";
+import { InfinityIcon } from "lucide-react";
+
+type Props = {
+    activeCourse: {imageSrc:string, title:string} // Replace 'any' with DB type later
+    heart : number;
+    points : number;
+    haveActiveSubscription : boolean;
+}
+
+export const UserProgress = ({activeCourse, heart, points, haveActiveSubscription} : Props) => {
+    return (
+        <div className="flex items-center justify-between gap-x-2 w-full">
+            <Link href="/courses">
+                <Button variant="ghost">
+                    <Image 
+                        src = {activeCourse.imageSrc}
+                        alt = {activeCourse.title}
+                        className="rounded-md border"
+                        width={32}
+                        height={32}
+                    />
+                </Button>
+            </Link>
+            <Link href="/shop">
+                <Button variant="ghost" className="text-orange-500">
+                    <Image src="/points.svg" alt="Points" width={28} height={28} className="mr-2"/>
+                    {points}
+                </Button>
+            </Link>
+            <Link href="/shop">
+                <Button variant="ghost" className="text-rose-500">
+                    <Image src="/heart.svg" alt="Heart" width={22} height={22} className="mr-2"/>
+                    {haveActiveSubscription ? <InfinityIcon className="h-4 w-4 stroke-[3]"/> : heart}
+                </Button>
+            </Link>
+        </div>
+    )
+}
