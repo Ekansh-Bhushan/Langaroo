@@ -6,7 +6,7 @@ import { ClerkLoaded, ClerkLoading, UserButton } from "@clerk/nextjs";
 import { Loader } from "lucide-react";
 
 type Props = {
-    className?: String;
+    className?: string;
 }
 
 export const Sidebar = ({ className }: Props) => {

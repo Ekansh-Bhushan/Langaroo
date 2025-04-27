@@ -1,5 +1,4 @@
 import { getLesson, getUserProgress } from "@/db/queries";
-import { challenges } from "@/db/schema";
 import { redirect } from "next/navigation";
 import { Quiz } from "./quiz";
 
