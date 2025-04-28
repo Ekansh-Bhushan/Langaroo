@@ -99,7 +99,21 @@ const main = async () => {
                 type: "SELECT",
                 question: 'Which one of them is man',
                 order: 1,
-            }
+            },
+            {
+            id: 2,
+            lessonsID: 1,
+            type: "ASSIST",
+            question: '"The man" ',
+            order: 2,
+        },
+        {
+            id: 3,
+            lessonsID: 1,
+            type: "SELECT",
+            question: 'Which one of them is "The Woman" ',
+            order: 3,
+        }
         ]);
 
         await db.insert(schema.challengeOptions).values([
@@ -134,7 +148,81 @@ const main = async () => {
                 correctOption: false,
                 ImageSrc: '/baby.svg',
                 audioSrc: '/pb_baby.mp3',
-            }
+            },
+
+
+
+
+            {
+                id: 5,
+                challengeId: 2, // which one of them is man
+                text: 'Man',
+                correctOption: true,
+            
+                audioSrc: '/pb_man.mp3',
+            },
+            {
+                id: 6,
+                challengeId: 2, // which one of them is man
+                text: 'Woman',
+                correctOption: false,
+                
+                audioSrc: '/pb_woman.mp3',
+            },
+            {
+                id: 7,
+                challengeId: 2, // which one of them is man
+                text: 'Baby',
+                correctOption: false,
+                
+                audioSrc: '/pb_baby.mp3',
+            },
+            {
+                id: 8,
+                challengeId: 2, // which one of them is man
+                text: 'Baby bay',
+                correctOption: false,
+                
+                audioSrc: '/pb_baby.mp3',
+            },
+
+
+
+
+
+
+            {
+                id: 9,
+                challengeId: 3, // which one of them is man
+                text: 'Man',
+                correctOption: false,
+                ImageSrc: '/man.svg',
+                audioSrc: '/pb_man.mp3',
+            },
+            {
+                id: 10,
+                challengeId: 3, // which one of them is man
+                text: 'Woman',
+                correctOption: true,
+                ImageSrc: '/woman.svg',
+                audioSrc: '/pb_woman.mp3',
+            },
+            {
+                id: 11,
+                challengeId: 3, // which one of them is man
+                text: 'Baby',
+                correctOption: false,
+                ImageSrc: '/baby.svg',
+                audioSrc: '/pb_baby.mp3',
+            },
+            {
+                id: 12,
+                challengeId: 3, // which one of them is man
+                text: 'Baby bay',
+                correctOption: false,
+                ImageSrc: '/baby.svg',
+                audioSrc: '/pb_baby.mp3',
+            },
         ]);
 
         console.log('Seeding finished')
