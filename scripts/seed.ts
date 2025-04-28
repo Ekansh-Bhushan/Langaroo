@@ -23,18 +23,23 @@ const main = async () => {
             {
                 id: 1,
                 title: "Punjabi",
-                imageSrc: "/flag.svg",
+                imageSrc: "/punjabi-letter.svg",
             },
             {
                 id: 2,
-                title: "English",
-                imageSrc: "/lettera.svg",
+                title: "Assamese",
+                imageSrc: "/Assamese-letter.svg",
             },
             {
                 id: 3,
-                title: "Japanses",
-                imageSrc: "/letterb.svg",
+                title: "Bengali",
+                imageSrc: "/Bengali-letter.svg",
             },
+{
+            id: 4,
+            title: "Bodo",
+            imageSrc: "/Bodo-letter.svg",
+        },
         ]); 
         
         await db.insert(schema.units).values([
@@ -118,6 +123,14 @@ const main = async () => {
                 id: 3,
                 challengeId: 1, // which one of them is man
                 text: 'Baby',
+                correctOption: false,
+                ImageSrc: '/baby.svg',
+                audioSrc: '/pb_baby.mp3',
+            },
+            {
+                id: 4,
+                challengeId: 1, // which one of them is man
+                text: 'Baby bay',
                 correctOption: false,
                 ImageSrc: '/baby.svg',
                 audioSrc: '/pb_baby.mp3',
