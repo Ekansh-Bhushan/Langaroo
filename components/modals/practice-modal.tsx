@@ -30,7 +30,7 @@ export const PracticeModal = () => {
                         Practice Lesson
                     </DialogTitle>
                     <DialogDescription className="text-center text-base">
-                        Use practice session to regain hearts. you can not loose hearts in practice session.
+                        Use practice session to regain hearts and points. you can not loose hearts in practice session.
                     </DialogDescription>
                 </DialogHeader>
                 <DialogFooter className="mb-4">
