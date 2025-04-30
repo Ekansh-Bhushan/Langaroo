@@ -2,10 +2,9 @@
 
 import { refillHearts } from "@/actions/user-progress";
 import { Button } from "@/components/ui/button";
-import { point } from "drizzle-orm/pg-core";
 import Image from "next/image";
-import { useTransition } from "react";
-import { start } from "repl";
+import { useEffect, useTransition } from "react";
+import axios from "axios";
 import { toast } from "sonner";
 
 const POINTS_TO_REFILL = 10;
@@ -17,6 +16,64 @@ type Props = {
 
 export const Items = ({ hearts, points, hasActiveSubscription } : Props) => {
     const [pending, startTransition] = useTransition();
+    const loadScript = (src: string)=> {
+        return new Promise((resolve)=> {
+            const script =document.createElement('script');
+            script.src= src;
+            script.onload = () => {
+                resolve(true)
+            }
+
+            script.onerror=()=>{
+                resolve(false)
+            }
+
+            document.body.appendChild(script)
+        })
+    }
+
+    const onPayment = async () => {
+        try {
+          // 1. Create the order from your backend
+          const res = await axios.post("http://localhost:3000/api/razorpay");
+          const data = res.data;
+      
+          const options = {
+            key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!, // use NEXT_PUBLIC for frontend access
+            order_id: data.id, // Razorpay order ID
+            ...data,
+            handler: async function (response: any) {
+              console.log("Payment Response:", response);
+      
+              const verificationPayload = {
+                orderId: response.razorpay_order_id,
+                paymentId: response.razorpay_payment_id,
+                signature: response.razorpay_signature,
+              };
+      
+              try {
+                const verificationRes = await axios.post(
+                  "http://localhost:3000/api/razorpayVerfiy",
+                  verificationPayload
+                );
+                console.log("Verification Success:", verificationRes.data);
+              } catch (err) {
+                console.error("Verification Failed:", err);
+              }
+            },
+          };
+      
+          const rzp = new (window as any).Razorpay(options);
+          rzp.open();
+        } catch (err) {
+          console.error("Order Creation Failed:", err);
+        }
+      };
+      
+
+    useEffect(()=>{
+        loadScript('https://checkout.razorpay.com/v1/checkout.js')
+    },[])
 
     const onRefillHearts = () => {
         if(pending || hearts === 5 || points < POINTS_TO_REFILL) {
@@ -28,6 +85,13 @@ export const Items = ({ hearts, points, hasActiveSubscription } : Props) => {
                 .catch(() => toast.error("Something went wrong"))
         })
     }
+
+    const onUpgrade = async () => {
+        startTransition(() => {
+            onPayment();
+        })
+    }
+      
 
     return (
         <ul className="w-full">
@@ -63,6 +127,25 @@ export const Items = ({ hearts, points, hasActiveSubscription } : Props) => {
                             </div>
                         )
                     }
+                </Button>
+            </div>
+            <div className="flex items-center w-full p-4 pt-8 gap-x-4 border-t-2">
+                <Image
+                    src= "/premium.svg"
+                    alt="pro"
+                    height={60}
+                    width={60}
+                />
+                <div className="flex-1">
+                    <p className="text-neutral-700 text-base lg:text-lg font-bold">
+                        Unlimite heart
+                    </p>
+                </div>
+                <Button
+                    onClick={onUpgrade}
+                    disabled= {pending || hasActiveSubscription}
+                >
+                    {hasActiveSubscription ? "active" : "upgrade"}
                 </Button>
             </div>
         </ul>

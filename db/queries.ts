@@ -2,7 +2,7 @@ import { cache, use } from "react";
 import db from "./drizzle";
 import { auth } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
-import { challengeProgress, challenges, courses, lessons, units, userProgress } from "./schema";
+import { challengeProgress, challenges, courses, lessons, units, userProgress, userSubscription } from "./schema";
 
 export const getUserProgress = cache(async () => {
     const { userId } = await auth();
@@ -190,3 +190,23 @@ export const getlessonPercentage = cache(async() => {
 
     return percentage;
 })
+
+const DAY_IN_MS = 86_400_000;
+
+export const getUserSubscriptions = cache(async () => {
+    const { userId } = await auth();
+    if (!userId) return null;
+
+    const data = await db.query.userSubscription.findFirst({
+        where: eq(userSubscription.userId, userId),
+    });
+
+    if (!data) return null;
+
+    const isActive = data.razorpayCurrentPeriodEnd?.getTime()! + DAY_IN_MS > Date.now();
+
+    return {
+        ...data,
+        isActive: !!isActive,
+    };
+});
