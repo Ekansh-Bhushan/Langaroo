@@ -15,6 +15,7 @@ import Image from "next/image";
 import { ResultCard } from "./result-card";
 import { useRouter } from "next/navigation";
 import { Flag } from "lucide-react";
+import { useHeartModal } from "@/store/use-heart-modal";
 
 type Props = {
     initialPercentage: number;
@@ -34,6 +35,8 @@ export const Quiz = ({
     initialLessonChallenges,
     userSubscription
 } : Props) => {
+
+    const { open: openHeartsModal } = useHeartModal(); 
 
     const router = useRouter();
     const { width, height } = useWindowSize();
@@ -102,7 +105,7 @@ export const Quiz = ({
                 upsertChallengeProgress(challenge.id)
                     .then((response) => {
                         if(response?.error === "no hearts left"){
-                            console.log("Missing Hearts")
+                            openHeartsModal();
                             return;
                         }
 
@@ -121,7 +124,7 @@ export const Quiz = ({
                 reduceHearts(challenge.id)
                     .then((response) => {
                         if(response?.error === "no hearts left") {
-                            console.log("Missing Hearts")
+                            openHeartsModal();
                             return;
                         }
                         wrongControls.play();
