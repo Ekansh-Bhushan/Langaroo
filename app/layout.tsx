@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 import { ExitModal } from "@/components/modals/exit-modal";
 import { HeartModal } from "@/components/modals/hearts-modal";
+import { PracticeModal } from "@/components/modals/practice-modal";
 
 const nunito = Nunito({
   variable: "--font-nunito",
@@ -28,6 +29,7 @@ export default function RootLayout({
           <Toaster />
           <ExitModal/>
           <HeartModal/>
+          <PracticeModal/>
           {children}
         </body>
       </html>
