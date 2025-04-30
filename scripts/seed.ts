@@ -225,6 +225,31 @@ const main = async () => {
             },
         ]);
 
+
+        await db.insert(schema.challenges).values([
+            {
+                id: 4,
+                lessonsID: 2,
+                type: "SELECT",
+                question: 'Which one of them is man',
+                order: 1,
+            },
+            {
+            id: 5,
+            lessonsID: 2,
+            type: "ASSIST",
+            question: '"The man" ',
+            order: 2,
+        },
+        {
+            id: 6,
+            lessonsID: 2,
+            type: "SELECT",
+            question: 'Which one of them is "The Woman" ',
+            order: 3,
+        }
+        ]);
+
         console.log('Seeding finished')
     }catch (error) {
         console.error("Error seeding database:", error);
