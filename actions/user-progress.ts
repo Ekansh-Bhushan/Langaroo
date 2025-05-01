@@ -1,9 +1,10 @@
 "use server";
 
 import db from "@/db/drizzle";
-import { getCoursesById, getUserProgress } from "@/db/queries";
+import { getCoursesById, getUserProgress, getUserSubscriptions } from "@/db/queries";
 import { challengeProgress, challenges, userProgress } from "@/db/schema";
 import { auth, currentUser } from "@clerk/nextjs/server";
+import { error } from "console";
 import { and, eq, is } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -62,6 +63,7 @@ export const reduceHearts = async (challengeId: number) => {
         throw new Error("User not authenticated");
     }
     const currentUserProgress = await getUserProgress();
+    const userSubscription = await getUserSubscriptions();
 
     const challenge = await db.query.challenges.findFirst({
         where: eq(challenges.id, challengeId)
@@ -90,6 +92,9 @@ export const reduceHearts = async (challengeId: number) => {
         throw new Error("User progress not found");
     }
 
+    if(userSubscription?.isActive) {
+        return {error:"subscription"}
+    }
     if(currentUserProgress.hearts === 0) {
         return {error: "no hearts left"}
     }
