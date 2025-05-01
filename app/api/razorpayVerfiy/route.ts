@@ -1,6 +1,10 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
+import { addMonths } from "date-fns";
+import db from "@/db/drizzle";
+import { userSubscription } from "@/db/schema";
+import { eq } from "drizzle-orm";
 
 export async function POST(req: NextRequest) {
   const { userId } = await auth(); // No need to await this
@@ -17,7 +21,28 @@ export async function POST(req: NextRequest) {
   const generatedSignature = hmac.digest("hex");
 
   if (generatedSignature === signature) {
-    // Payment verified and do the DB operation
+    const currentPeriodEnd = addMonths(new Date(), 1);
+    const razorpayPlanId = process.env.RAZORPAY_PLAN_ID!;
+    const razorpayCustomerId = orderId;
+    const razorpaySubscriptionId = paymentId;
+    await db
+    .insert(userSubscription)
+    .values({
+      userId,
+      razorpayCustomerId,
+      razorpaySubscriptionId,
+      razorpayPlanId,
+      razorpayCurrentPeriodEnd: currentPeriodEnd,
+    })
+    .onConflictDoUpdate({
+      target: userSubscription.userId,
+      set: {
+        razorpayCustomerId,
+        razorpaySubscriptionId,
+        razorpayPlanId,
+        razorpayCurrentPeriodEnd: currentPeriodEnd,
+      },
+    });
     return NextResponse.json({ success: true, message: "Payment verified" });
   } else {
     return new NextResponse("Invalid signature", { status: 400 });
