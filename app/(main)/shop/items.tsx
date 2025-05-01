@@ -6,8 +6,8 @@ import Image from "next/image";
 import { useEffect, useTransition } from "react";
 import axios from "axios";
 import { toast } from "sonner";
+import { POINTS_TO_REFILL } from "@/constants";
 
-const POINTS_TO_REFILL = 10;
 type Props = {
     hearts : number;
     points : number;
