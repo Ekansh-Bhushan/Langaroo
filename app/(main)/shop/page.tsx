@@ -5,13 +5,15 @@ import { getUserProgress, getUserSubscriptions } from "@/db/queries"
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import { Items } from "./items";
+import { Promo } from "@/components/promo";
+import { Quests } from "@/components/quest";
 
 const ShopPage = async () => {
 
     const userProgressData = getUserProgress();
 
     const userSubscriptionData = getUserSubscriptions();
-    
+
 
     const [
         userProgress,
@@ -22,12 +24,12 @@ const ShopPage = async () => {
     ])
     const isPro = !!userSubscriptions?.isActive
 
-    if(!userProgress || !userProgress.activeCourse) {
+    if (!userProgress || !userProgress.activeCourse) {
         redirect("/courses")
     }
-    
+
     return (
-        <div className="flex flex-row-reverse gap-[48px] px-6"> 
+        <div className="flex flex-row-reverse gap-[48px] px-6">
             <StickyWrapper>
                 <UserProgress
                     activeCourse={userProgress.activeCourse}
@@ -35,17 +37,21 @@ const ShopPage = async () => {
                     points={userProgress.points}
                     haveActiveSubscription={isPro}
                 />
+                {!isPro && (
+                    <Promo />
+                )}
+                <Quests points={userProgress.points} />
             </StickyWrapper>
             <FeedWrapper>
                 <div className="w-full flex flex-col items-center">
                     <Image
-                        src = "/shop.svg"
-                        alt = "shop"
+                        src="/shop.svg"
+                        alt="shop"
                         height={90}
                         width={90}
                     />
 
-                    <h1 className="text-center font-bold text-neutral-800 text-2xl my-6"> 
+                    <h1 className="text-center font-bold text-neutral-800 text-2xl my-6">
                         Shop
                     </h1>
 
