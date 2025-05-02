@@ -7,6 +7,8 @@ import { useEffect, useTransition } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 import { POINTS_TO_REFILL } from "@/constants";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 type Props = {
     hearts : number;
@@ -15,7 +17,9 @@ type Props = {
 }
 
 export const Items = ({ hearts, points, hasActiveSubscription } : Props) => {
+    const router = useRouter();
     const [pending, startTransition] = useTransition();
+    const [isSubscribed, setIsSubscribed] = useState(hasActiveSubscription); 
     const loadScript = (src: string)=> {
         return new Promise((resolve)=> {
             const script =document.createElement('script');
@@ -55,9 +59,13 @@ export const Items = ({ hearts, points, hasActiveSubscription } : Props) => {
                   "http://localhost:3000/api/razorpayVerfiy",
                   verificationPayload
                 );
-                
+
+                setIsSubscribed(true);
+        toast.success("Subscription activated!");
+        router.refresh();
               } catch (err) {
                 console.error("Verification Failed:", err);
+                toast.error("Verification failed. Please try again.");
               }
             },
           };
@@ -142,9 +150,9 @@ export const Items = ({ hearts, points, hasActiveSubscription } : Props) => {
                 </div>
                 <Button
                     onClick={onUpgrade}
-                    disabled= {pending || hasActiveSubscription}
+                    disabled= {pending || isSubscribed}
                 >
-                    {hasActiveSubscription ? "active" : "upgrade"}
+                    {isSubscribed ? "active" : "upgrade"}
                 </Button>
             </div>
         </ul>

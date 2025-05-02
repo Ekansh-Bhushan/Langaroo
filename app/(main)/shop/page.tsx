@@ -14,7 +14,6 @@ const ShopPage = async () => {
 
     const userSubscriptionData = getUserSubscriptions();
 
-
     const [
         userProgress,
         userSubscriptions
