@@ -43,8 +43,7 @@ export const Items = ({ hearts, points, hasActiveSubscription } : Props) => {
             order_id: data.id, // Razorpay order ID
             ...data,
             handler: async function (response: any) {
-              console.log("Payment Response:", response);
-      
+              
               const verificationPayload = {
                 orderId: response.razorpay_order_id,
                 paymentId: response.razorpay_payment_id,
@@ -56,7 +55,7 @@ export const Items = ({ hearts, points, hasActiveSubscription } : Props) => {
                   "http://localhost:3000/api/razorpayVerfiy",
                   verificationPayload
                 );
-                console.log("Verification Success:", verificationRes.data);
+                
               } catch (err) {
                 console.error("Verification Failed:", err);
               }

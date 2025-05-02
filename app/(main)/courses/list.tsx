@@ -29,8 +29,7 @@ export const List = ({ courses, activeCourseId } : Props) => {
             .then(() => {
               router.push("/learn"); 
             })
-            .catch((err) => {
-              console.log(err);
+            .catch(() => {
               toast.error("Something went wrong");
             });
         });
