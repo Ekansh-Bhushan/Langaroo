@@ -26,10 +26,13 @@ export const List = ({ courses, activeCourseId } : Props) => {
 
         startTransition(() => {
             upsertUserProgress(id)
-              .catch(() => {
-                toast.error("Something went wrong");
-              }
-            );
+            .then(() => {
+              router.push("/learn"); 
+            })
+            .catch((err) => {
+              console.log(err);
+              toast.error("Something went wrong");
+            });
         });
     }
 
