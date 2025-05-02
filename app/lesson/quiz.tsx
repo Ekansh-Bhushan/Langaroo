@@ -142,7 +142,7 @@ export const Quiz = ({
                         wrongControls.play();
                         setStatus("wrong");
 
-                        if(response?.error){
+                        if(!response?.error){
                             setHearts((prev) => Math.max(prev - 1, 0));
                         }
                     })
