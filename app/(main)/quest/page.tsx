@@ -1,9 +1,7 @@
 import { FeedWrapper } from "@/components/feed-wrapper";
 import { Promo } from "@/components/promo";
 import { StickyWrapper } from "@/components/sticky-wrapper";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
-import { Separator } from "@/components/ui/separator";
 import { UserProgress } from "@/components/user-progress"
 import { quest } from "@/constants";
 import { getUserProgress, getUserSubscriptions } from "@/db/queries"
